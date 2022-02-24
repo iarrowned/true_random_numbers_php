@@ -14,21 +14,8 @@ class Randomizer
         'base' => 10
     ];
 
-    private function request(string $method, int $n, int $min, int $max, bool $replacement, int $base)
+    private function request(array $post_data)
     {
-        $post_data = [
-            "jsonrpc" => "2.0",
-            "method" => $method,
-            "params" => [
-                "apiKey" => self::API_KEY,
-                "n" => $n,
-                "min" => $min,
-                "max" => $max,
-                "replacement" => $replacement,
-                "base" => $base
-            ],
-            "id" => random_int(0, 99999)
-        ];
         $data_json = json_encode($post_data);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, self::URL);
@@ -49,11 +36,127 @@ class Randomizer
         }
     }
 
+    /**
+     * @param int $n - Кол-во генерируемых чисел, [1, 1e4]
+     * @param int $min - Нижний порог [-1e9, 1e9]
+     * @param int $max - Верхний порог [-1e9, 1e9]
+     * @param bool $replacement - Повторения [true, false]
+     * @param int $base - num base [2, 8, 10, 16]
+     * @return mixed
+     * @throws Exception
+     */
     public function generateIntegers(int $n = 1, int $min = 0, int $max = 100, bool $replacement = true, int $base = 10)
     {
         $method = "generateIntegers";
-        $result = $this->request($method, $n, $min, $max, $replacement, $base);
+        $post_data = [
+            "jsonrpc" => "2.0",
+            "method" => $method,
+            "params" => [
+                "apiKey" => self::API_KEY,
+                "n" => $n,
+                "min" => $min,
+                "max" => $max,
+                "replacement" => $replacement,
+                "base" => $base
+            ],
+            "id" => random_int(0, 99999)
+        ];
+        return $this->request($post_data);
+    }
+
+    /**
+     * @param int $n - Кол-во генерируемых UUIDs, [1, 1000]
+     * @return mixed
+     * @throws Exception
+     */
+    public function generateUUIDs(int $n = 1)
+    {
+        $method = 'generateUUIDs';
+        $post_data = [
+            "jsonrpc" => "2.0",
+            "method" => $method,
+            "params" => [
+                "apiKey" => self::API_KEY,
+                "n" => $n
+            ],
+            "id" => random_int(0, 99999)
+        ];
+        $result = $this->request($post_data);
         return $result;
     }
 
+    /**
+     * @param int $n - Кол-во генерируемых Blobs [1, 100]
+     * @param int $size - Размер BLOB [1, 1048576]
+     * @return mixed
+     * @throws Exception
+     */
+    public function generateBlobs(int $n = 1, int $size = 1024)
+    {
+        $method = 'generateBlobs';
+        $post_data = [
+            "jsonrpc" => "2.0",
+            "method" => $method,
+            "params" => [
+                "apiKey" => self::API_KEY,
+                'n' => $n,
+                "size" => $size
+            ],
+            "id" => random_int(0, 99999)
+        ];
+        $result = $this->request($post_data);
+        return $result;
+    }
+
+    /**
+     * @param int $n - Кол-во генерируемых decimal чисел [1, 10000]
+     * @param int $decimalPlaces - Кол-во знаков после запятой [1, 14]
+     * @param bool $replacement - Повторения [true, false]
+     * @return mixed
+     * @throws Exception
+     */
+    public function generateDecimalFractions(int $n = 1, int $decimalPlaces = 8, bool $replacement = true)
+    {
+        $method = 'generateDecimalFractions';
+        $post_data = [
+            "jsonrpc" => "2.0",
+            "method" => $method,
+            "params" => [
+                "apiKey" => self::API_KEY,
+                'n' => $n,
+                'decimalPlaces' => $decimalPlaces,
+                'replacement' => $replacement
+            ],
+            "id" => random_int(0, 99999)
+        ];
+        $result = $this->request($post_data);
+        return $result;
+    }
+
+    /**
+     * @param int $n - Кол-во генерируемых Gaussians nums []
+     * @param float $mean
+     * @param float $standardDeviation
+     * @param int $significantDigits
+     * @return mixed
+     * @throws Exception
+     */
+    public function generateGaussians(int $n = 1, float $mean = 0.0, float $standardDeviation = 1.0, int $significantDigits = 8)
+    {
+        $method = 'generateGaussians';
+        $post_data = [
+            "jsonrpc" => "2.0",
+            "method" => $method,
+            "params" => [
+                "apiKey" => self::API_KEY,
+                "n" => $n,
+                "mean" => $mean,
+                "standardDeviation" => $standardDeviation,
+                "significantDigits" => $significantDigits
+            ],
+            "id" => random_int(0, 99999)
+        ];
+        $result = $this->request($post_data);
+        return $result;
+    }
 }
