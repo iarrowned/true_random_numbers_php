@@ -82,7 +82,7 @@ class Randomizer
             "id" => random_int(0, 99999)
         ];
         $result = $this->request($post_data);
-        return $result;
+        return $result . PHP_EOL;
     }
 
     /**
