@@ -1,5 +1,6 @@
 <?php
-require_once 'src/Randomizer.php';
+require_once "vendor/autoload.php";
+use Randomizer\Randomizer;
 
 $r = new Randomizer();
 print_r($r->generateIntegers(2, 10, 20));

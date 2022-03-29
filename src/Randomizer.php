@@ -1,4 +1,6 @@
 <?php
+namespace Randomizer;
+
 
 class Randomizer
 {

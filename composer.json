@@ -1,0 +1,17 @@
+{
+    "name": "kirill/true_random_numbers_php",
+    "description": "True random numbers with use Random.org",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Kirill",
+            "email": "14krabik14@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Randomizer\\": "src"
+        }
+    }
+}
